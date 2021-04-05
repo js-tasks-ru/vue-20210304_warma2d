@@ -38,13 +38,12 @@ new Vue({
 
   computed: {
     emails() {
-      return emails;
-    },
-  },
-
-  methods: {
-    isMarked(email) {
-      return this.searchWord && email.toLowerCase().includes(this.searchWord.toLowerCase());
+      return emails.map(email => {
+        return {
+          email,
+          isMarked: this.searchWord && email.toLowerCase().includes(this.searchWord.toLowerCase()),
+        }
+      });
     },
   },
 });

@@ -7,6 +7,13 @@
 <body>
 
 <!-- Решение -->
+<div id="app">
+  <label v-for="n in 5">
+    <input type="radio" :title="n" :value="n" name="inputName" v-model="selectedRadio"/>{{ n }}
+  </label>
+  <div>{{ currentTitle }}</div>
+</div>
+
 
 <script type="module" src="script.js"></script>
 </body>

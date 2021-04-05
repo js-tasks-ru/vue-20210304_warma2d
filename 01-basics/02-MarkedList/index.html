@@ -14,9 +14,9 @@
 <div id="app">
   <input v-model="searchWord" type="text" />
   <ul>
-    <li v-for="email in emails"
-        v-bind:class="{ marked: isMarked(email) }"
-    >{{ email }}</li>
+    <li v-for="item in emails"
+        :class="{ marked: item.isMarked }"
+    >{{ item.email }}</li>
   </ul>
 </div>
 
