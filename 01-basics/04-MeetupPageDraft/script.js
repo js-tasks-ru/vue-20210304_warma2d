@@ -18,7 +18,7 @@ function getImageUrlByImageId(imageId) {
 /**
  * Функция, возвращающая словарь заголовков по умолчанию для всех типов пунктов программы
  */
-const getAgendaItemDefaultTitles = () => ({
+const getAgendaTypes = () => ({
   registration: 'Регистрация',
   opening: 'Открытие',
   break: 'Перерыв',
@@ -33,7 +33,7 @@ const getAgendaItemDefaultTitles = () => ({
  * Функция, возвращая словарь иконок для для всех типов пунктов программы.
  * Соответствует имени иконок в директории /assets/icons
  */
-const getAgendaItemIcons = () => ({
+const getAgendaIcons = () => ({
   registration: 'key',
   opening: 'cal-sm',
   talk: 'tv',
@@ -44,4 +44,55 @@ const getAgendaItemIcons = () => ({
   other: 'cal-sm',
 });
 
-new Vue();
+new Vue({
+  el: '#app',
+  data() {
+    return {
+      meetup: null,
+      isLoading: false,
+    };
+  },
+
+  computed: {
+    imageUrl() {
+      if (this.meetup && this.meetup.imageId) {
+        return getImageUrlByImageId(this.meetup.imageId);
+      } else return null;
+    },
+
+    localeDate() {
+      if (this.meetup && this.meetup.date) {
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        let meetupDate = new Date(this.meetup.date);
+        return meetupDate.toLocaleDateString('ru-RU', options);
+      }
+      return null;
+    },
+  },
+
+  watch: {},
+
+  mounted() {
+    this.getMeetup(MEETUP_ID);
+  },
+
+  methods: {
+    getMeetup(id) {
+      this.isLoading = true;
+      fetch(API_URL + `/meetups/${id}`)
+        .then((response) => response.json())
+        .then((jsonResponse) => {
+          this.isLoading = false;
+          this.meetup = jsonResponse;
+        });
+    },
+
+    getAgendaIcon(type) {
+      return getAgendaIcons()[type];
+    },
+
+    getAgendaType(type) {
+      return getAgendaTypes()[type];
+    },
+  },
+});
