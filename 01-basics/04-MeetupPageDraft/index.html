@@ -35,7 +35,7 @@
                             </div>
                             <div v-if="item.agenda.startsAt && item.agenda.endsAt" class="meetup-agenda__item-col">{{ item.agenda.startsAt }} - {{ item.agenda.endsAt }}</div>
                             <div class="meetup-agenda__item-col">
-                                <h5 v-if="item.agenda.title || item.agenda.type" class="meetup-agenda__title">{{ item.agenda.title || getAgendaType(item.agenda.type)}}</h5>
+                                <h5 v-if="item.agenda.title || item.agenda.type" class="meetup-agenda__title">{{ item.agenda.title || item.agendaTypeWord }}</h5>
                                 <p><span v-if="item.agenda.language">{{ item.agenda.speaker }}</span><span class="meetup-agenda__dot"></span><span
                                     class="meetup-agenda__lang">{{ item.agenda.language }}</span></p>
                                 <p v-if="item.agenda.description">{{ item.agenda.description }}</p>

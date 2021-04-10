@@ -54,12 +54,6 @@ new Vue({
   },
 
   computed: {
-    imageUrl() {
-      if (this.meetup && this.meetup.imageId) {
-        return getImageUrlByImageId(this.meetup.imageId);
-      } else return null;
-    },
-
     localeDate() {
       if (this.meetup && this.meetup.date) {
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -84,6 +78,7 @@ new Vue({
         return {
           agenda,
           agendaIcon: '/assets/icons/icon-' + this.getAgendaIcon(agenda.type) + '.svg',
+          agendaTypeWord: this.getAgendaType(agenda.type),
         };
       });
     },
