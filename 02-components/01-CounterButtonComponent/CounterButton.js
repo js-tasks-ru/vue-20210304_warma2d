@@ -3,20 +3,24 @@ export default {
 
   // Компонент должен иметь входной параметр
   props: {
-    inputCounter: Number,
+    count: {
+      type: Number,
+      default: 0,
+    },
   },
 
   // Компонент должен иметь модель
   data() {
     return {
-      localCounter: 0,
+      counter: 0,
     };
   },
 
   // Шаблон лучше держать максимально простым, а логику выносить в методы
   methods: {
     doIncrement() {
-      this.$emit('increment', ++this.localCounter);
+      this.counter = this.count;
+      this.$emit('increment', ++this.counter);
     },
   },
 
@@ -24,5 +28,5 @@ export default {
   template: `<button
               type="button"
               @click="doIncrement"
-             >{{ localCounter }}</button>`,
+             >{{ count }}</button>`,
 };
