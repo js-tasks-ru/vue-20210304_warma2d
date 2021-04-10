@@ -68,6 +68,25 @@ new Vue({
       }
       return null;
     },
+
+    coverStyle() {
+      return this.meetup.imageId
+        ? {
+            '--bg-url': 'url(' + getImageUrlByImageId(this.meetup.imageId) + ')',
+          }
+        : undefined;
+    },
+
+    agendaItems() {
+      if (!this.meetup) return null;
+
+      return this.meetup.agenda.map((agenda) => {
+        return {
+          agenda,
+          agendaIcon: '/assets/icons/icon-' + this.getAgendaIcon(agenda.type) + '.svg',
+        };
+      });
+    },
   },
 
   watch: {},

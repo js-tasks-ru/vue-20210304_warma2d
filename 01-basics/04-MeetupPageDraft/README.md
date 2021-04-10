@@ -7,7 +7,7 @@
 Требуется создать Vue приложение — черновик страницы митапа, на которой выводится информация о митапе.
 - Данные митапа требуется получить по [API /meetups/:ID](https://course-vue.javascript.ru/api/#/Meetups/MeetupsController_findById);
 - Требуется вывести:
-  - Изображение (при наличии), ссылку на которое можно получить по https://course-vue.javascript.ru/api/images/4
+  - Изображение (при наличии), ссылку на которое можно получить по [API /images/:ID](https://course-vue.javascript.ru/api/#/Images/ImagesController_getImage);
   - Название митапа;
   - Описание митапа;
   - Основную информацию о митапе;
