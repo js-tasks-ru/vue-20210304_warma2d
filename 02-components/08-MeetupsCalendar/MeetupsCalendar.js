@@ -10,7 +10,6 @@ export const MeetupsCalendar = {
   data() {
     return {
       currentMonthDate: null,
-      minMeetupDate: null,
     };
   },
 
@@ -22,26 +21,12 @@ export const MeetupsCalendar = {
   },
 
   created() {
-    let minMeetupUnixDate
-    let maxMeetupUnixDate
-
-    if (this.localMeetups.length > 0) {
-      let maxKey = this.localMeetups.length-1
-      minMeetupUnixDate = this.localMeetups[0].date
-      maxMeetupUnixDate = this.localMeetups[maxKey].date
-    } else {
-      minMeetupUnixDate = new Date().getTime()
-      maxMeetupUnixDate = new Date().getTime()
-    }
-
-    this.minMeetupDate = new Date(minMeetupUnixDate)
-
-    this.currentMonthDate = new Date(this.minMeetupDate.getFullYear(), this.minMeetupDate.getMonth(), 1)
+    this.currentMonthDate = new Date()
   },
 
   computed: {
     localMeetups() {
-      return this.meetups.sort((a,b) => {
+      return [...this.meetups].sort((a,b) => {
         return a.date - b.date
       })
     },
@@ -103,12 +88,6 @@ export const MeetupsCalendar = {
   },
 
   methods: {
-
-
-    capitalizeFirstLetter(string) {
-      return string.charAt(0).toUpperCase() + string.slice(1);
-    },
-
     getDatePrevMonth(date) {
       return new Date(date.getFullYear(), date.getMonth()-1, 1)
     },
