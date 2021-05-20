@@ -9,13 +9,8 @@ export const MeetupsCalendar = {
 
   data() {
     return {
-      localMeetups: [],
-      minMonthDate: null,
-      maxMonthDate: null,
       currentMonthDate: null,
       minMeetupDate: null,
-      maxMeetupDate: null,
-      arrayDates: [],
     };
   },
 
@@ -27,52 +22,37 @@ export const MeetupsCalendar = {
   },
 
   created() {
-    this.localMeetups = JSON.parse(JSON.stringify(this.meetups))
+    let minMeetupUnixDate
+    let maxMeetupUnixDate
 
-    this.localMeetups.sort((a,b) => {
-      return a.date - b.date
-    })
+    if (this.localMeetups.length > 0) {
+      let maxKey = this.localMeetups.length-1
+      minMeetupUnixDate = this.localMeetups[0].date
+      maxMeetupUnixDate = this.localMeetups[maxKey].date
+    } else {
+      minMeetupUnixDate = new Date().getTime()
+      maxMeetupUnixDate = new Date().getTime()
+    }
 
-    let maxKey = this.localMeetups.length-1
-    let minMeetupUnixDate = this.localMeetups[0].date
-    let maxMeetupUnixDate = this.localMeetups[maxKey].date
     this.minMeetupDate = new Date(minMeetupUnixDate)
-    this.maxMeetupDate = new Date(maxMeetupUnixDate)
-
-    this.minMonthDate = new Date(this.minMeetupDate.getFullYear(), this.minMeetupDate.getMonth(), 1)
-    this.maxMonthDate = new Date(this.maxMeetupDate.getFullYear(), this.maxMeetupDate.getMonth(), 1)
 
     this.currentMonthDate = new Date(this.minMeetupDate.getFullYear(), this.minMeetupDate.getMonth(), 1)
-
-    this.calcData()
   },
 
   computed: {
-    months() {
-      return [
-        'январь',
-        'февраль',
-        'март',
-        'апрель',
-        'май',
-        'июнь',
-        'июль',
-        'август',
-        'сентябрь',
-        'октябрь',
-        'ноябрь',
-        'декабрь',
-      ]
+    localMeetups() {
+      return this.meetups.sort((a,b) => {
+        return a.date - b.date
+      })
     },
 
     currentMonthTitle() {
-      return this.capitalizeFirstLetter(this.months[this.currentMonthDate.getMonth()])+' '+this.currentMonthDate.getFullYear()
+      return this.currentMonthDate.toLocaleDateString(navigator.language, {  month: 'long' })+' '+this.currentMonthDate.getFullYear()
     },
-  },
 
-  methods: {
-    calcData() {
-      this.arrayDates = []
+    arrayDates() {
+      let arrayDates = []
+
       let currentMonthDate = new Date(this.currentMonthDate.getFullYear(), this.currentMonthDate.getMonth(), 1)
 
       let currentMonthFirstDay = this.getFirstDayDate(this.currentMonthDate).getDay()
@@ -97,7 +77,7 @@ export const MeetupsCalendar = {
         tempArr.reverse();
 
         for (let date of tempArr) {
-          this.arrayDates.push(date)
+          arrayDates.push(date)
         }
       }
 
@@ -105,20 +85,25 @@ export const MeetupsCalendar = {
       for (let days = 0; days < currentMonthMaxDayNumber; days++) {
         nextDate = new Date(currentMonthDate.getFullYear(), currentMonthDate.getMonth(), 1)
         nextDate.setDate(nextDate.getDate()+days)
-        this.arrayDates.push(nextDate)
+        arrayDates.push(nextDate)
       }
 
-      let lastCurrentDate = this.arrayDates[this.arrayDates.length-1]
+      let lastCurrentDate = arrayDates[arrayDates.length-1]
       addDaysCounter = 7 - lastCurrentDate.getDay()
       if (addDaysCounter != 7) {
         for (let days = 1; days <= addDaysCounter; days++) {
           nextDate = new Date(currentMonthDate.getFullYear(), currentMonthDate.getMonth(), lastCurrentDate.getDate())
           nextDate.setDate(nextDate.getDate()+days)
-          this.arrayDates.push(nextDate)
+          arrayDates.push(nextDate)
         }
       }
 
+      return arrayDates
     },
+  },
+
+  methods: {
+
 
     capitalizeFirstLetter(string) {
       return string.charAt(0).toUpperCase() + string.slice(1);
@@ -143,17 +128,11 @@ export const MeetupsCalendar = {
     },
 
     goLeftMonth() {
-      if (this.currentMonthDate > this.minMonthDate) {
-        this.currentMonthDate = new Date(this.currentMonthDate.getFullYear(), this.currentMonthDate.getMonth()-1, 1)
-        this.calcData()
-      }
+      this.currentMonthDate = new Date(this.currentMonthDate.getFullYear(), this.currentMonthDate.getMonth()-1, 1)
     },
 
     goRightMonth() {
-      if (this.currentMonthDate < this.maxMonthDate) {
-        this.currentMonthDate = new Date(this.currentMonthDate.getFullYear(), this.currentMonthDate.getMonth()+1, 1)
-        this.calcData()
-      }
+      this.currentMonthDate = new Date(this.currentMonthDate.getFullYear(), this.currentMonthDate.getMonth()+1, 1)
     },
   },
 
