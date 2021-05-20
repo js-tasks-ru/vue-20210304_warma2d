@@ -144,19 +144,15 @@ export const MeetupsCalendar = {
 
     goLeftMonth() {
       if (this.currentMonthDate > this.minMonthDate) {
-        if (this.currentMonthDate.getMonth() > 1) {
-          this.currentMonthDate = new Date(this.currentMonthDate.getFullYear(), this.currentMonthDate.getMonth()-1, 1)
-          this.calcData()
-        }
+        this.currentMonthDate = new Date(this.currentMonthDate.getFullYear(), this.currentMonthDate.getMonth()-1, 1)
+        this.calcData()
       }
     },
 
     goRightMonth() {
       if (this.currentMonthDate < this.maxMonthDate) {
-        if (this.currentMonthDate.getMonth() < 11) {
-          this.currentMonthDate = new Date(this.currentMonthDate.getFullYear(), this.currentMonthDate.getMonth()+1, 1)
-          this.calcData()
-        }
+        this.currentMonthDate = new Date(this.currentMonthDate.getFullYear(), this.currentMonthDate.getMonth()+1, 1)
+        this.calcData()
       }
     },
   },
