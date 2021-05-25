@@ -1,17 +1,12 @@
 <template>
   <div class="toasts">
-    <div class="toast toast_success">
-      <app-icon icon="check-circle" />
-      <span>Success 1</span>
-    </div>
-    <div class="toast toast_success">
-      <app-icon icon="check-circle" />
-      <span>Success 2</span>
-    </div>
-    <!-- ... -->
-    <div class="toast toast_error">
-      <app-icon icon="alert-circle" />
-      <span>Error 1</span>
+    <div v-for="toast in toastQueue"
+         :key="toast.message"
+         :class="{toast_success: toast.type === 'OK', toast_error: toast.type === 'ERR'}"
+         class="toast"
+    >
+      <app-icon :icon="toast.icon"></app-icon>
+      <span>{{ toast.message }}</span>
     </div>
   </div>
 </template>
@@ -19,17 +14,55 @@
 <script>
 import AppIcon from './AppIcon';
 
-const DELAY = 5000;
+const DELAY = 5000
+const TOAST_TYPE_OK = 'OK'
+const TOAST_TYPE_ERR = 'ERR'
 
 export default {
   name: 'TheToaster',
 
   components: { AppIcon },
 
-  methods: {
-    error(message) {},
+  data() {
+    return {
+      toastQueue: [],
+      toastIncrement: 0,
+    };
+  },
 
-    success(message) {},
+  methods: {
+    error(message) {
+      this.createToast(message, TOAST_TYPE_ERR)
+    },
+
+    success(message) {
+      this.createToast(message, TOAST_TYPE_OK)
+    },
+
+    createToast(message, type) {
+      this.toastIncrement++;
+
+      let toast = {}
+      toast.type = type === TOAST_TYPE_OK ? TOAST_TYPE_OK : TOAST_TYPE_ERR
+      toast.icon = type === TOAST_TYPE_OK ? 'check-circle' : 'alert-circle'
+      toast.message = message
+      toast.key = this.toastIncrement
+
+      this.toastQueue.push(toast)
+
+      setTimeout(this.deleteToast, DELAY, this.toastIncrement);
+    },
+
+    deleteToast(toastKey) {
+      let itemIndex = 0
+      for (let toast of this.toastQueue) {
+        if (toast.key === toastKey) {
+          break
+        }
+        itemIndex++
+      }
+      this.toastQueue.splice(itemIndex,1)
+    }
   },
 };
 </script>
