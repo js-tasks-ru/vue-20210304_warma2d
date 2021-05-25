@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <p><counter-button v-model="count1"></counter-button> - count1 = {{ count1 }}</p>
-    <p><counter-button v-model="count1"></counter-button> - count1 = {{ count1 }}</p>
-    <p><counter-button v-model="count2"></counter-button> - count2 = {{ count2 }}</p>
+    <p><counter-button @increment="count1 = $event" v-model="count1"></counter-button> - count1 = {{ count1 }}</p>
+    <p><counter-button @increment="count1 = $event" v-model="count1"></counter-button> - count1 = {{ count1 }}</p>
+    <p><counter-button @increment="count2 = $event" v-model="count2"></counter-button> - count2 = {{ count2 }}</p>
     <p>
       <counter-button :count="count3" @increment="count3 = $event"></counter-button>
       - count3 = {{ count3 }}
