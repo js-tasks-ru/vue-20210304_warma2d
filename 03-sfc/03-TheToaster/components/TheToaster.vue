@@ -1,6 +1,6 @@
 <template>
   <div class="toasts">
-    <div v-for="toast in toastStack"
+    <div v-for="toast in toastQueue"
          :key="toast.message"
          :class="{toast_success: toast.type === 'OK', toast_error: toast.type === 'ERR'}"
          class="toast"
@@ -25,7 +25,7 @@ export default {
 
   data() {
     return {
-      toastStack: [],
+      toastQueue: [],
       toastIncrement: 0,
     };
   },
@@ -48,20 +48,20 @@ export default {
       toast.message = message
       toast.key = this.toastIncrement
 
-      this.toastStack.push(toast)
+      this.toastQueue.push(toast)
 
       setTimeout(this.deleteToast, DELAY, this.toastIncrement);
     },
 
     deleteToast(toastKey) {
       let itemIndex = 0
-      for (let toast of this.toastStack) {
+      for (let toast of this.toastQueue) {
         if (toast.key === toastKey) {
           break
         }
         itemIndex++
       }
-      this.toastStack.splice(itemIndex,1)
+      this.toastQueue.splice(itemIndex,1)
     }
   },
 };

@@ -6,6 +6,11 @@
 
 <script>
 export default {
+  model: {
+    prop: 'count',
+    event: 'increment'
+  },
+
   props: {
     count: {
       type: Number,

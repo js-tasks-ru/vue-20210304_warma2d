@@ -17,7 +17,7 @@
               class="dropdown__item"
               :class="{ 'dropdown__item_icon': hasIcon }"
               type="button"
-              @click="selectedIcon = item.icon; $emit('change', item.value)"
+              @click="$emit('change', item.value)"
       >
         <app-icon v-if="hasIcon && item.icon" :icon="item.icon" />
         {{ item.text }}
@@ -35,7 +35,6 @@ export default {
   data() {
     return {
       isShow: false,
-      selectedIcon: null,
     }
   },
 
@@ -58,7 +57,19 @@ export default {
 
       return ''
     },
-  },
+
+    selectedIcon() {
+      for (let option of this.options) {
+        if (option.value === this.value) {
+          if (this.hasIcon) {
+            return option.icon
+          }
+        }
+      }
+
+      return null
+    },
+},
 
   methods: {
     toggle() {
@@ -76,15 +87,7 @@ export default {
   },
 
   watch: {
-    value(val) {
-      for (let option of this.options) {
-        if (option.value === val) {
-          if (this.hasIcon) {
-            this.selectedIcon = option.icon
-          }
-        }
-      }
-    },
+
   },
 
   props: {
