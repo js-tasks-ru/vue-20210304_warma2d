@@ -1,8 +1,19 @@
-<template></template>
+<template>
+  <div>
+    <h1>{{ title }}</h1>
+    <slot></slot>
+  </div>
+</template>
 
 <script>
 export default {
   name: 'AuthLayout',
+
+  props: {
+    title: {
+      type: String,
+    }
+  },
 };
 </script>
 
