@@ -15,6 +15,10 @@
 import MeetupsView from '../components/MeetupsView';
 
 const NAVIGATION_DUPLICATED_ERROR_NAME = 'NavigationDuplicated'
+const DEFAULT_VIEW_VALUE = 'list'
+const DEFAULT_DATE_VALUE = 'all'
+const DEFAULT_PARTICIPATION_VALUE = 'all'
+const DEFAULT_SEARCH_VALUE = ''
 
 export default {
   name: 'QuerySync',
@@ -26,10 +30,10 @@ export default {
 
   data() {
     return {
-      view: 'list',
-      date: 'all',
-      participation: 'all',
-      search: '',
+      view: DEFAULT_VIEW_VALUE,
+      date: DEFAULT_DATE_VALUE,
+      participation: DEFAULT_PARTICIPATION_VALUE,
+      search: DEFAULT_SEARCH_VALUE,
     }
   },
 
@@ -37,13 +41,15 @@ export default {
     buttonUpdateView(view) {
       this.view = view
 
-      let query = this.$route.query
+      let query = JSON.parse(JSON.stringify(this.$route.query))
       query.view = view
-      console.log(query)
+
+      if (view === DEFAULT_VIEW_VALUE) {
+        delete query.view
+      }
+
       this.$router.push({ path: this.$route.path, query }).catch((err) => {
-        if (err.name === NAVIGATION_DUPLICATED_ERROR_NAME) {
-          console.log(err)
-        } else {
+        if (err.name !== NAVIGATION_DUPLICATED_ERROR_NAME) {
           throw err
         }
       });
@@ -52,8 +58,13 @@ export default {
     buttonUpdateDate(date) {
       this.date = date
 
-      let query = this.$route.query
+      let query = JSON.parse(JSON.stringify(this.$route.query))
       query.date = date
+
+      if (date === DEFAULT_DATE_VALUE) {
+        delete query.date
+      }
+
       this.$router.push({ path: this.$route.path, query }).catch((err) => {
         if (err.name !== NAVIGATION_DUPLICATED_ERROR_NAME) {
           throw err
@@ -64,8 +75,13 @@ export default {
     buttonUpdateParticipation(participation) {
       this.participation = participation
 
-      let query = this.$route.query
+      let query = JSON.parse(JSON.stringify(this.$route.query))
       query.participation = participation
+
+      if (participation === DEFAULT_PARTICIPATION_VALUE) {
+        delete query.participation
+      }
+
       this.$router.push({ path: this.$route.path, query }).catch((err) => {
         if (err.name !== NAVIGATION_DUPLICATED_ERROR_NAME) {
           throw err
@@ -76,8 +92,13 @@ export default {
     buttonUpdateSearch(search) {
       this.search = search
 
-      let query = this.$route.query
+      let query = JSON.parse(JSON.stringify(this.$route.query))
       query.search = search
+
+      if (search === DEFAULT_SEARCH_VALUE) {
+        delete query.search
+      }
+
       this.$router.push({ path: this.$route.path, query }).catch((err) => {
         if (err.name !== NAVIGATION_DUPLICATED_ERROR_NAME) {
           throw err
@@ -98,10 +119,7 @@ export default {
   },
 
   watch: {
-    $route(to, from) {
-      console.log('watched!!!')
-      console.log(to)
-      console.log(from)
+    $route() {
       this.setParamsFromUrl()
     },
   },
