@@ -1,5 +1,5 @@
 <template>
-  <form class="form">
+  <form @submit.prevent="auth" class="form">
     <div class="form-group">
       <label class="form-label">Email</label>
       <div class="input-group">
@@ -13,7 +13,7 @@
       </div>
     </div>
     <div class="form__buttons">
-      <button @click.prevent="auth" type="submit" class="button button_primary button_block">Войти</button>
+      <button type="submit" class="button button_primary button_block">Войти</button>
     </div>
     <div class="form__append">
       Нет аккаунта?

@@ -1,5 +1,5 @@
 <template>
-  <form class="form">
+  <form @submit.prevent="auth" class="form">
     <div class="form-group">
       <label class="form-label">Email</label>
       <div class="input-group">
@@ -28,7 +28,7 @@
       <label class="checkbox"><input v-model="isAgree" type="checkbox" /> Я согласен с условиями <span></span></label>
     </div>
     <div class="form__buttons">
-      <button @click.prevent="auth" type="submit" class="button button_primary">Зарегистрироваться</button>
+      <button type="submit" class="button button_primary">Зарегистрироваться</button>
     </div>
     <div class="form__append">
       Уже есть аккаунт?
