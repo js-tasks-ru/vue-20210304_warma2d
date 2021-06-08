@@ -1,8 +1,11 @@
 <template>
   <div>
-    <h1>{{ title }}</h1>
-
-    <slot></slot>
+    <div class="page page_meetup-forms">
+      <div class="container">
+        <h2 class="page__title">{{ title }}</h2>
+        <slot></slot>
+      </div>
+    </div>
   </div>
 </template>
 

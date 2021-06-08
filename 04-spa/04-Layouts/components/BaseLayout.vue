@@ -3,9 +3,7 @@
     <TheHeader></TheHeader>
 
     <main class="main">
-      <div class="page page_onboarding">
-        <slot></slot>
-      </div>
+      <slot></slot>
     </main>
 
     <TheFooter></TheFooter>
@@ -29,15 +27,5 @@ export default {
 <style scoped>
 main {
   flex: 1 0 auto;
-}
-
-.page {
-  padding: 48px 0;
-}
-
-.page.page_onboarding {
-  max-width: 374px;
-  width: 100%;
-  margin: 0 auto;
 }
 </style>

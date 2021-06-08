@@ -1,7 +1,11 @@
 <template>
   <div>
-    <h1>{{ title }}</h1>
-    <slot></slot>
+    <div class="page page_onboarding">
+      <div class="container">
+        <h1 class="page__title text-center">{{ title }}</h1>
+        <slot></slot>
+      </div>
+    </div>
   </div>
 </template>
 
