@@ -1,7 +1,12 @@
 <template>
   <label class="checkbox">
-    <input type="checkbox" />
-    <slot />
+    <input
+      :value.prop="valueWithSetter"
+      v-bind="$attrs"
+      v-on="localListeners"
+      @change="handleChange"
+      type="checkbox" />
+    <slot></slot>
     <span></span>
   </label>
 </template>
@@ -9,6 +14,45 @@
 <script>
 export default {
   name: 'AppCheckbox',
+  inheritAttrs: false,
+
+  computed: {
+    valueWithSetter: {
+      get() {
+        return this.value
+      },
+      set(value) {
+        this.$emit('change', value);
+      },
+    },
+
+    localListeners() {
+      for(let key in this.$listeners) {
+        if (key === 'change') {
+          delete this.$listeners[key]
+        }
+      }
+      return this.$listeners
+    },
+  },
+
+  data() {
+    return {
+
+    }
+  },
+
+  methods: {
+    handleChange(event) {
+      this.$emit('change', event.target.checked)
+      console.log(event)
+    },
+  },
+
+  model: {
+    prop: 'checked',
+    event: 'change',
+  },
 };
 </script>
 

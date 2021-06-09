@@ -1,21 +1,23 @@
 <template>
   <div
     class="input-group"
-    :class="{ 'input-group_icon ': hasIcon, 'input-group_icon-left': hasLeftIcon, 'input-group_icon-right': hasRightIcon }"
+    :class="{ 'input-group_icon': hasIcon, 'input-group_icon-left': hasLeftIcon, 'input-group_icon-right': hasRightIcon }"
   >
-    <slot class="icon" name="left-icon"></slot>
+    <slot name="left-icon"></slot>
 
     <component
       v-bind="$attrs"
-      v-on="$listeners"
+      v-on="localListeners"
       :is="multiline ? 'textarea' : 'input'"
       class="form-control"
       :class="{ 'form-control_sm': small, 'form-control_rounded': rounded }"
-      :value.prop="valueWithSetter"
+      :value.prop="value"
+      @input="$emit('input', $event.target.value)"
+      @change="$emit('change', $event.target.value)"
       ref="input"
     ></component>
 
-    <slot class="icon" name="right-icon"></slot>
+    <slot name="right-icon"></slot>
   </div>
 </template>
 
@@ -29,16 +31,13 @@ export default {
       return this.hasLeftIcon || this.hasRightIcon
     },
 
-    valueWithSetter: {
-      get() {
-        // Значение в модель = значение параметра модели обёртки
-        return (typeof this.value === 'string') ? this.value : this.value.data
-      },
-      set(value) {
-        // Изменение значения из модели = порождение события обновления модели обёртки
-        this.$emit('input', value);
-        this.$emit('change', value);
-      },
+    localListeners() {
+      for(let key in this.$listeners) {
+        if (key === 'input' || key === 'change') {
+          delete this.$listeners[key]
+        }
+      }
+      return this.$listeners
     },
   },
 
@@ -51,6 +50,8 @@ export default {
 
   mounted() {
     this.hasLeftRightIcon()
+
+
   },
 
   methods: {
