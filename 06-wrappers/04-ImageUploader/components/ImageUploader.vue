@@ -1,20 +1,93 @@
 <template>
   <div class="image-uploader">
     <label
-      class="image-uploader__preview image-uploader__preview-loading"
-      style="--bg-image: url('https://course-vue.javascript.ru/api/images/1')"
+      @click="clearImage"
+      class="image-uploader__preview"
+      :class="{ 'image-uploader__preview-loading': isLoading }"
+      :style="coverStyle"
     >
-      <span>Удалить изображение</span>
-      <input type="file" accept="image/*" class="form-control-file" />
+      <span>{{ title }}</span>
+      <input @change="handleInput" ref="imageInput" type="file" accept="image/*" class="form-control-file" />
     </label>
   </div>
 </template>
 
 <script>
-// import { ImageService } from '../ImageService';
+import { ImageService } from '../ImageService';
 
 export default {
   name: 'ImageUploader',
+
+  computed: {
+    isLoadImage() {
+      return this.imageId === null
+    },
+
+    coverStyle() {
+      return this.imageId
+        ? {
+          '--bg-image': 'url(' + ImageService.getImageURL(this.imageId) + ')',
+        }
+        : undefined;
+    },
+
+    title() {
+      if (this.isLoading) {
+        return 'Загрузка...'
+      } else if (this.isLoadImage) {
+        return 'Загрузить изображение'
+      } else {
+        return 'Удалить изображение'
+      }
+    },
+  },
+
+  data() {
+    return {
+      isLoading: false,
+    }
+  },
+
+  methods: {
+    clearImage(event) {
+      if (this.imageId) {
+        this.$emit('change', null);
+        this.$refs.imageInput.value = ''
+        event.preventDefault()
+      }
+    },
+
+    handleInput(event) {
+      if (event.target.files[0] !== undefined) {
+        this.isLoading = true
+        let file = event.target.files[0]
+
+        ImageService.uploadImage(file).then(res => {
+          if (res.id !== undefined) {
+            this.$emit('change', res.id);
+          } else {
+            this.$emit('change', null);
+          }
+          this.isLoading = false
+        })
+
+      } else {
+        this.$emit('change', null);
+      }
+    },
+  },
+
+  props: {
+    imageId: {
+      type: Number,
+      default: null,
+    },
+  },
+
+  model: {
+    prop: 'imageId',
+    event: 'change',
+  },
 };
 </script>
 

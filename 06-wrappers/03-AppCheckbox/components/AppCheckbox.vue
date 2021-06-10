@@ -2,9 +2,9 @@
   <label class="checkbox">
     <input
       v-model="valueWithSetter"
+      v-bind="$attrs"
       :value="value"
       v-on="localListeners"
-      @change="handleChange"
       type="checkbox" />
     <slot></slot>
     <span></span>
@@ -22,11 +22,7 @@ export default {
         return this.checked
       },
       set(value) {
-        if (this.value) {
-          this.$emit('change', this.value);
-        } else {
-          this.$emit('change', value);
-        }
+        this.$emit('change', value);
       },
     },
 
@@ -48,21 +44,18 @@ export default {
     }
   },
 
-  methods: {
-    handleChange(event) {
-      this.$emit('change', event.target.checked)
-    },
-  },
-
   model: {
-    prop: 'value',
+    prop: 'checked',
     event: 'change',
   },
 
   props: {
     value: {
-      type: [String, Array, Boolean],
+
     },
+    checked: {
+      type: [Boolean, Array],
+    }
   },
 };
 </script>
