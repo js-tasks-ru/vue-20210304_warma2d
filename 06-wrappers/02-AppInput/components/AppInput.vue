@@ -32,12 +32,14 @@ export default {
     },
 
     localListeners() {
-      for(let key in this.$listeners) {
+      let listeners = JSON.parse(JSON.stringify(this.$listeners))
+
+      for(let key in listeners) {
         if (key === 'input' || key === 'change') {
-          delete this.$listeners[key]
+          delete listeners[key]
         }
       }
-      return this.$listeners
+      return listeners
     },
   },
 
@@ -50,8 +52,6 @@ export default {
 
   mounted() {
     this.hasLeftRightIcon()
-
-
   },
 
   methods: {
@@ -81,7 +81,7 @@ export default {
       type: Boolean,
     },
     value: {
-      type: [String, InputEvent],
+      type: [String],
     },
   },
 

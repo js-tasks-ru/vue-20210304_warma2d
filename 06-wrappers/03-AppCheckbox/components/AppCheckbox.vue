@@ -1,8 +1,8 @@
 <template>
   <label class="checkbox">
     <input
-      :value.prop="valueWithSetter"
-      v-bind="$attrs"
+      v-model="valueWithSetter"
+      :value="value"
       v-on="localListeners"
       @change="handleChange"
       type="checkbox" />
@@ -19,20 +19,30 @@ export default {
   computed: {
     valueWithSetter: {
       get() {
-        return this.value
+        //return this.value
+        console.log(this.checked)
+        return this.checked
       },
       set(value) {
-        this.$emit('change', value);
+        if (value && this.value) {
+          this.$emit('change', this.value);
+          //console.log(this.value)
+        } else {
+          this.$emit('change', value);
+          //console.log(value)
+        }
       },
     },
 
     localListeners() {
-      for(let key in this.$listeners) {
+      let listeners = JSON.parse(JSON.stringify(this.$listeners))
+
+      for(let key in listeners) {
         if (key === 'change') {
-          delete this.$listeners[key]
+          delete listeners[key]
         }
       }
-      return this.$listeners
+      return listeners
     },
   },
 
@@ -45,13 +55,18 @@ export default {
   methods: {
     handleChange(event) {
       this.$emit('change', event.target.checked)
-      console.log(event)
     },
   },
 
   model: {
     prop: 'checked',
     event: 'change',
+  },
+
+  props: {
+    value: {
+      type: String,
+    },
   },
 };
 </script>
