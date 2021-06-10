@@ -32,7 +32,7 @@ export default {
     },
 
     localListeners() {
-      let listeners = JSON.parse(JSON.stringify(this.$listeners))
+      let listeners = { ...this.$listeners }
 
       for(let key in listeners) {
         if (key === 'input' || key === 'change') {

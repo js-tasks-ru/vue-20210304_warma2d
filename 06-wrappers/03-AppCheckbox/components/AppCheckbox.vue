@@ -19,23 +19,19 @@ export default {
   computed: {
     valueWithSetter: {
       get() {
-        //return this.value
-        console.log(this.checked)
         return this.checked
       },
       set(value) {
-        if (value && this.value) {
+        if (this.value) {
           this.$emit('change', this.value);
-          //console.log(this.value)
         } else {
           this.$emit('change', value);
-          //console.log(value)
         }
       },
     },
 
     localListeners() {
-      let listeners = JSON.parse(JSON.stringify(this.$listeners))
+      let listeners = { ...this.$listeners }
 
       for(let key in listeners) {
         if (key === 'change') {
@@ -59,13 +55,13 @@ export default {
   },
 
   model: {
-    prop: 'checked',
+    prop: 'value',
     event: 'change',
   },
 
   props: {
     value: {
-      type: String,
+      type: [String, Array, Boolean],
     },
   },
 };
