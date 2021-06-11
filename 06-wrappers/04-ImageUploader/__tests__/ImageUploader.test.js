@@ -29,7 +29,7 @@ function createInputFileMock(input) {
   return async () => {
     fileValue = '/fake_path/image.png';
     const file = new File([], 'image.png');
-    FileBrowseMock.mockReturnValueOnce([file]);
+    FileBrowseMock.mockReturnValue([file]);
     await input.trigger('change');
     return { file };
   };
@@ -60,7 +60,8 @@ describe('wrappers/ImageUploader', () => {
         expect(wrapper.find('label').classes('image-uploader__preview-loading')).toBe(false);
       });
 
-      it(`ImageUploader должен переходить в состояние загрузки и выводить "${LOADING_TEXT}" и иметь юimage-uploader__preview-loading после выбора изображения на время загрузки`, async () => {
+      it(`ImageUploader должен переходить выводить "${LOADING_TEXT}" и иметь .image-uploader__preview-loading после выбора изображения на время загрузки`, async () => {
+        jest.spyOn(ImageService, 'uploadImage').mockResolvedValueOnce(new Promise(() => {}));
         await mockFile();
         expect(wrapper.text()).toContain(LOADING_TEXT);
         expect(wrapper.find('label').classes('image-uploader__preview-loading')).toBe(true);
