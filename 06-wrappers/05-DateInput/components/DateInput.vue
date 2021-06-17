@@ -5,7 +5,9 @@
     :type="type"
     @change="changeMethod"
     :value="localValue"
-  ><slot></slot></app-input>
+  >
+    <slot v-for="slot in Object.keys($slots)" :name="slot" :slot="slot"/>
+  </app-input>
 </template>
 
 <script>
@@ -77,9 +79,21 @@ export default {
 
   methods: {
     changeMethod(event) {
-      this.$emit('change', event.target.value)
+      let date = new Date(event.target.valueAsNumber)
+
+      if (this.type === 'date' || this.type === 'datetime-local') {
+        this.$emit('change', date.toISOString().slice(0, 10))
+      } else if (this.type === 'time') {
+        let seconds = date.getUTCSeconds()
+
+        if (this.$attrs.step) {
+          seconds += Number(this.$attrs.step)
+        }
+        this.$emit('change', date.getUTCHours() + ':' + date.getUTCMinutes() + ':' + seconds)
+
+        event.target.valueAsDate = new Date(event.target.valueAsNumber)
+      }
     },
   },
-
 };
 </script>
