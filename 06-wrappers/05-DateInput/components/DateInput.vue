@@ -58,8 +58,10 @@ export default {
         date = this.value
       }
 
-      if (this.type === 'date' || this.type === 'datetime-local') {
+      if (this.type === 'date') {
         return date.toISOString().slice(0, 10)
+      } else if (this.type === 'datetime-local') {
+        return date.toISOString().slice(0, 10)+'T'+date.getTime()
       } else if (this.type === 'time') {
         let seconds = date.getUTCSeconds()
 
@@ -79,20 +81,8 @@ export default {
 
   methods: {
     changeMethod(event) {
-      let date = new Date(event.target.valueAsNumber)
-
-      if (this.type === 'date' || this.type === 'datetime-local') {
-        this.$emit('change', date.toISOString().slice(0, 10))
-      } else if (this.type === 'time') {
-        let seconds = date.getUTCSeconds()
-
-        if (this.$attrs.step) {
-          seconds += Number(this.$attrs.step)
-        }
-        this.$emit('change', date.getUTCHours() + ':' + date.getUTCMinutes() + ':' + seconds)
-
-        event.target.valueAsDate = new Date(event.target.valueAsNumber)
-      }
+        this.$emit('change', event.target.valueAsNumber)
+        // event.target.valueAsDate = new Date(event.target.valueAsNumber)
     },
   },
 };
