@@ -1,8 +1,10 @@
 <template>
   <app-input
-    v-bind="localAttrs"
+    v-bind="$attrs"
     v-on="localListeners"
+    :type="type"
     @change="changeMethod"
+    :value="localValue"
   ><slot></slot></app-input>
 </template>
 
@@ -32,13 +34,6 @@ export default {
   },
 
   computed: {
-    localAttrs() {
-      let attrs = { ...this.$attrs }
-      attrs['type'] = this.type
-
-      return attrs
-    },
-
     localListeners() {
       let listeners = { ...this.$listeners }
 
@@ -50,6 +45,30 @@ export default {
       return listeners
     },
 
+    localValue() {
+      let date;
+
+      if (typeof this.value === 'string') {
+        return this.value
+      } else if (typeof this.value === 'number') {
+        date = new Date(this.value)
+      } else if (this.value instanceof Date){
+        date = this.value
+      }
+
+      if (this.type === 'date' || this.type === 'datetime-local') {
+        return date.toISOString().slice(0, 10)
+      } else if (this.type === 'time') {
+        let seconds = date.getUTCSeconds()
+
+        if (this.$attrs.step) {
+          seconds += Number(this.$attrs.step)
+        }
+        return date.getUTCHours() + ':' + date.getUTCMinutes() + ':' + seconds
+      }
+
+      return this.value
+    },
   },
 
   mounted() {
