@@ -81,8 +81,13 @@ export default {
 
   methods: {
     changeMethod(event) {
+      if (typeof this.value === 'string') {
+        this.$emit('change', event.target.value)
+      } else if (typeof this.value === 'number') {
         this.$emit('change', event.target.valueAsNumber)
-        // event.target.valueAsDate = new Date(event.target.valueAsNumber)
+      } else if (this.value instanceof Date){
+        this.$emit('change', new Date(event.target.valueAsNumber))
+      }
     },
   },
 };
