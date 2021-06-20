@@ -99,14 +99,14 @@ export default {
     }
   },
 
-  watch: {
-    localMeetup: {
-      deep: true,
-      handler(newValue) {
-        this.$emit('submit', { ...newValue });
-      },
-    },
-  },
+  // watch: {
+  //   localMeetup: {
+  //     deep: true,
+  //     handler(newValue) {
+  //       this.$emit('submit', { ...newValue });
+  //     },
+  //   },
+  // },
 
   mounted() {
     this.localMeetup = { ...this.meetup }

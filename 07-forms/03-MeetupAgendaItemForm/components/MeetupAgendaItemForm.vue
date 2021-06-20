@@ -1,13 +1,12 @@
 <template>
   <div class="form-section form-section_inner">
-    <button type="button" class="remove-button">
+    <button @click="$emit('remove')" type="button" class="remove-button">
       <app-icon icon="trash" />
     </button>
 
     <div class="form-group">
-      <select class="form-control" title="Тип">
-        <option value="talk">Доклад</option>
-        <option value="other">Другое</option>
+      <select v-model="localAgendaItem.type" class="form-control" title="Тип">
+        <option v-for="item in agendaItemTypes" :key="item.value" :value="item.value">{{ item.text }}</option>
       </select>
     </div>
 
@@ -15,28 +14,48 @@
       <div class="form__col">
         <div class="form-group">
           <label class="form-label">Начало</label>
-          <input class="form-control" type="time" placeholder="00:00" />
+          <input ref="startInput" v-model="localAgendaItem.startsAt" class="form-control" type="time" placeholder="00:00" />
         </div>
       </div>
       <div class="form__col">
         <div class="form-group">
           <label class="form-label">Окончание</label>
-          <input class="form-control" type="time" placeholder="00:00" />
+          <input ref="endInput" v-model="localAgendaItem.endsAt" class="form-control" type="time" placeholder="00:00" />
         </div>
       </div>
     </div>
 
-    <div class="form-group">
-      <label class="form-label">Заголовок</label>
-      <input class="form-control" />
+    <div v-show="localAgendaItem.type === talkType" class="form-group">
+      <label class="form-label">Тема</label>
+      <input v-model="localAgendaItem.title" class="form-control" />
     </div>
-    <div class="form-group">
+    <div v-show="localAgendaItem.type === talkType" class="form-group">
+      <label class="form-label">Докладчик</label>
+      <textarea v-model="localAgendaItem.speaker" class="form-control"></textarea>
+    </div>
+    <div v-show="localAgendaItem.type === talkType" class="form-group">
       <label class="form-label">Описание</label>
-      <textarea class="form-control"></textarea>
+      <textarea v-model="localAgendaItem.description" class="form-control"></textarea>
     </div>
-    <div class="form-group">
+    <div v-show="localAgendaItem.type === talkType" class="form-group">
       <label class="form-label">Язык</label>
-      <select class="form-control"></select>
+      <select v-model="localAgendaItem.language" class="form-control">
+        <option v-for="item in languages" :key="item.value" :value="item.value">{{ item.text }}</option>
+      </select>
+    </div>
+
+    <div v-show="localAgendaItem.type === otherType" class="form-group">
+      <label class="form-label">Заголовок</label>
+      <input v-model="localAgendaItem.title" class="form-control" />
+    </div>
+    <div v-show="localAgendaItem.type === otherType" class="form-group">
+      <label class="form-label">Описание</label>
+      <textarea v-model="localAgendaItem.description" class="form-control"></textarea>
+    </div>
+
+    <div v-show="localAgendaItem.type !== talkType && localAgendaItem.type !== otherType" class="form-group">
+      <label class="form-label">Нестандартный текст (необязательно)</label>
+      <input v-model="localAgendaItem.title" class="form-control" />
     </div>
   </div>
 </template>
@@ -65,6 +84,65 @@ export default {
   name: 'MeetupAgendaItemForm',
 
   components: { AppIcon },
+
+  props: {
+    agendaItem: {
+      type: Object,
+      required: true,
+    }
+  },
+
+  data(){
+    return {
+      localAgendaItem: null,
+      startTimeNumber: null,
+      endTimeNumber: null,
+    }
+  },
+
+  computed: {
+    agendaItemTypes() {
+      return getAgendaItemTypes()
+    },
+
+    talkType() {
+      return 'talk'
+    },
+
+    otherType() {
+      return 'other'
+    },
+
+    languages() {
+      return getTalkLanguages()
+    },
+  },
+
+  watch: {
+    localAgendaItem: {
+      handler(val) {
+        this.$emit('update:agendaItem', val)
+      },
+      deep:true,
+    },
+
+    startTimeNumber(newStart, oldStart) {
+      let delta = this.endTimeNumber - oldStart
+      let newEndTimeNumber = delta + newStart
+      this.$refs.endInput.valueAsNumber = newEndTimeNumber
+    },
+  },
+
+  updated() {
+    if (this.$refs.startInput) {
+      this.startTimeNumber = this.$refs.startInput.valueAsNumber
+      this.endTimeNumber = this.$refs.endInput.valueAsNumber
+    }
+  },
+
+  created() {
+    this.localAgendaItem = {...this.agendaItem}
+  },
 };
 </script>
 
