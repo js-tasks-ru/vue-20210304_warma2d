@@ -25,35 +25,35 @@
       </div>
     </div>
 
-    <div v-show="localAgendaItem.type === talkType" class="form-group">
+    <div v-if="localAgendaItem.type === talkType" class="form-group">
       <label class="form-label">Тема</label>
       <input v-model="localAgendaItem.title" class="form-control" />
     </div>
-    <div v-show="localAgendaItem.type === talkType" class="form-group">
+    <div v-if="localAgendaItem.type === talkType" class="form-group">
       <label class="form-label">Докладчик</label>
       <textarea v-model="localAgendaItem.speaker" class="form-control"></textarea>
     </div>
-    <div v-show="localAgendaItem.type === talkType" class="form-group">
+    <div v-if="localAgendaItem.type === talkType" class="form-group">
       <label class="form-label">Описание</label>
       <textarea v-model="localAgendaItem.description" class="form-control"></textarea>
     </div>
-    <div v-show="localAgendaItem.type === talkType" class="form-group">
+    <div v-if="localAgendaItem.type === talkType" class="form-group">
       <label class="form-label">Язык</label>
       <select v-model="localAgendaItem.language" class="form-control">
         <option v-for="item in languages" :key="item.value" :value="item.value">{{ item.text }}</option>
       </select>
     </div>
 
-    <div v-show="localAgendaItem.type === otherType" class="form-group">
+    <div v-if="localAgendaItem.type === otherType" class="form-group">
       <label class="form-label">Заголовок</label>
       <input v-model="localAgendaItem.title" class="form-control" />
     </div>
-    <div v-show="localAgendaItem.type === otherType" class="form-group">
+    <div v-if="localAgendaItem.type === otherType" class="form-group">
       <label class="form-label">Описание</label>
       <textarea v-model="localAgendaItem.description" class="form-control"></textarea>
     </div>
 
-    <div v-show="localAgendaItem.type !== talkType && localAgendaItem.type !== otherType" class="form-group">
+    <div v-if="localAgendaItem.type !== talkType && localAgendaItem.type !== otherType" class="form-group">
       <label class="form-label">Нестандартный текст (необязательно)</label>
       <input v-model="localAgendaItem.title" class="form-control" />
     </div>

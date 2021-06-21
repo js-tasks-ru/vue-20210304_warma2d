@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="$emit('submit', localMeetup)" class="form meetup-form">
+  <form @submit.prevent="$emit('submit', {...localMeetup})" class="form meetup-form">
     <div class="meetup-form__content">
       <fieldset class="form-section">
         <div class="form-group">
@@ -118,8 +118,14 @@ export default {
 
       let lastItemKey = this.localMeetup.agenda.length-1
       let lastItem = this.localMeetup.agenda[lastItemKey]
-      let penultItem = this.localMeetup.agenda[lastItemKey-1]
-      lastItem.startsAt = penultItem.endsAt
+      let penultItem = null
+      if (this.localMeetup.agenda.length > 1) {
+        penultItem = this.localMeetup.agenda[lastItemKey-1]
+      }
+      if (penultItem) {
+        lastItem.startsAt = penultItem.endsAt
+      }
+
       this.$set(this.localMeetup.agenda, lastItemKey, lastItem)
     },
 
