@@ -14,13 +14,13 @@
       <div class="form__col">
         <div class="form-group">
           <label class="form-label">Начало</label>
-          <input ref="startInput" v-model="localAgendaItem.startsAt" class="form-control" type="time" placeholder="00:00" />
+          <input v-model="localAgendaItem.startsAt" class="form-control" type="time" placeholder="00:00" />
         </div>
       </div>
       <div class="form__col">
         <div class="form-group">
           <label class="form-label">Окончание</label>
-          <input ref="endInput" v-model="localAgendaItem.endsAt" class="form-control" type="time" placeholder="00:00" />
+          <input v-model="localAgendaItem.endsAt" class="form-control" type="time" placeholder="00:00" />
         </div>
       </div>
     </div>
@@ -95,8 +95,6 @@ export default {
   data(){
     return {
       localAgendaItem: null,
-      startTimeNumber: null,
-      endTimeNumber: null,
     }
   },
 
@@ -121,22 +119,38 @@ export default {
   watch: {
     localAgendaItem: {
       handler(val) {
-        this.$emit('update:agendaItem', val)
+        this.$emit('update:agendaItem', {...val})
       },
       deep:true,
     },
 
-    startTimeNumber(newStart, oldStart) {
-      let delta = this.endTimeNumber - oldStart
-      let newEndTimeNumber = delta + newStart
-      this.$refs.endInput.valueAsNumber = newEndTimeNumber
+    'localAgendaItem.startsAt'(val, oldVal) {
+      if (oldVal) {
+        let delta = this.getMicroSeconds(val)-this.getMicroSeconds(oldVal)
+        let newEndNumber = this.getMicroSeconds(this.localAgendaItem.endsAt) + delta
+        this.localAgendaItem.endsAt = this.microSecondsToTime(newEndNumber)
+      }
     },
   },
 
-  updated() {
-    if (this.$refs.startInput) {
-      this.startTimeNumber = this.$refs.startInput.valueAsNumber
-      this.endTimeNumber = this.$refs.endInput.valueAsNumber
+  methods: {
+    getMicroSeconds(stringTime) {
+      if (!stringTime) return 0
+      let array = stringTime.split(':');
+      return (parseInt(array[0], 10) * 60 * 60 * 1000) + (parseInt(array[1], 10) * 60 * 1000)
+    },
+
+    microSecondsToTime(microSeconds) {
+      let d = new Date(microSeconds)
+      let hours = String(d.getUTCHours())
+      if (hours.length < 2) {
+        hours = '0'+hours
+      }
+      let minutes = String(d.getUTCMinutes())
+      if (minutes.length < 2) {
+        minutes = '0'+minutes
+      }
+      return hours+':'+minutes
     }
   },
 

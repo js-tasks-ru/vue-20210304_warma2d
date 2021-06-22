@@ -70,14 +70,15 @@ export default {
         let isMultiplicity = null
 
         if (this.$attrs.step) {
-          seconds += Number(this.$attrs.step)
+          // seconds += Number(this.$attrs.step)
           isMultiplicity = seconds % 60 === 0;
         }
         seconds = String(seconds)
         if (seconds.length < 2) {
           seconds = '0'+seconds
         }
-        let tempDate = new Date(date.getTime()+Number(seconds)*1000)
+        // let tempDate = new Date(date.getTime()+Number(seconds)*1000)
+        let tempDate = new Date(date.getTime())
 
         if (isMultiplicity === true || isMultiplicity === null) {
           return this.getHhmm(tempDate)
