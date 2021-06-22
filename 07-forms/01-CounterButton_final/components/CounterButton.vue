@@ -1,10 +1,16 @@
 <template>
-  <button @click="$emit('increment', (count+1))">{{ count }}</button>
+  <button @click="handleClick">{{ localCount }}</button>
 </template>
 
 <script>
 export default {
   name: 'CounterButton',
+
+  data() {
+    return {
+      localCount: null,
+    }
+  },
 
   model: {
     prop: 'count',
@@ -18,5 +24,21 @@ export default {
     },
   },
 
+  methods: {
+    handleClick() {
+      this.$emit('increment', (this.localCount+1));
+      this.localCount++
+    }
+  },
+
+  watch: {
+    count(val) {
+      this.localCount = val
+    },
+  },
+
+  mounted() {
+    this.localCount = this.count
+  },
 };
 </script>

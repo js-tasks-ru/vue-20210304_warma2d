@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="$emit('submit', {...localMeetup})" class="form meetup-form">
+  <form @submit.prevent="handleSubmit" class="form meetup-form">
     <div class="meetup-form__content">
       <fieldset class="form-section">
         <div class="form-group">
@@ -26,12 +26,12 @@
 
       <h3 class="form__section-title">Программа</h3>
       <meetup-agenda-item-form
-        v-for="item in localMeetup.agenda"
-        :key="item.id"
+        v-for="(item, index) in localMeetup.agenda"
+        :key="index"
         :agendaItem="item"
         class="mb-3"
-        @remove="removeItem(item.id)"
-        @update:agendaItem="updateItem"
+        @remove="removeItem(index)"
+        @update:agendaItem="updateItem($event, index)"
       />
 
       <div class="form-section_append">
@@ -52,6 +52,7 @@
 <script>
 import MeetupAgendaItemForm from './MeetupAgendaItemForm.vue';
 import ImageUploader from './ImageUploader';
+import _ from 'lodash';
 
 let lastId = -1;
 function createAgendaItem() {
@@ -99,20 +100,15 @@ export default {
     }
   },
 
-  // watch: {
-  //   localMeetup: {
-  //     deep: true,
-  //     handler(newValue) {
-  //       this.$emit('submit', { ...newValue });
-  //     },
-  //   },
-  // },
-
   mounted() {
-    this.localMeetup = { ...this.meetup }
+    this.localMeetup = _.cloneDeep(this.meetup)
   },
 
   methods: {
+    handleSubmit() {
+      this.$emit('submit', _.cloneDeep(this.localMeetup))
+    },
+
     addAgendaItem() {
       this.localMeetup.agenda.push(createAgendaItem())
 
@@ -129,15 +125,12 @@ export default {
       this.$set(this.localMeetup.agenda, lastItemKey, lastItem)
     },
 
-    removeItem(id) {
-      this.localMeetup.agenda = this.localMeetup.agenda.filter(function (item) {
-        return item.id !== id
-      })
+    removeItem(index) {
+      this.localMeetup.agenda.splice(index, 1)
     },
 
-    updateItem(item) {
-      let elementIndex = this.localMeetup.agenda.findIndex(element => element.id === item.id )
-      this.$set(this.localMeetup.agenda, elementIndex, item)
+    updateItem(item, index) {
+      this.$set(this.localMeetup.agenda, index, item)
     },
   },
 };
