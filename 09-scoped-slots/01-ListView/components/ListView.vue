@@ -3,7 +3,8 @@
     <!-- Требуется scoped-slot для элементов списка -->
     <slot
       name="scopedSlot"
-      :items="items"
+      v-for="item in items"
+      :item="item"
     ></slot>
   </div>
 </template>

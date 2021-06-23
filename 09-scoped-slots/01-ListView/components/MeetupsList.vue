@@ -1,19 +1,19 @@
 <template>
   <list-view :items="meetupsWithCoverAndBadge">
     <template #scopedSlot="slotProps">
-      <list-view-card v-for="item in slotProps.items"
+      <list-view-card
         tag="router-link"
-        :to="{ name: 'meetup', params: { meetupId: item.id } }"
-        :key="item.id"
-        :title="item.title"
-        :cover="item.cover"
-        :badge="item.badge"
-        :badge-success="item.badgeSuccess"
+        :to="{ name: 'meetup', params: { meetupId: slotProps.item.id } }"
+        :key="slotProps.item.id"
+        :title="slotProps.item.title"
+        :cover="slotProps.item.cover"
+        :badge="slotProps.item.badge"
+        :badge-success="slotProps.item.badgeSuccess"
       >
         <meetup-info
-          :date="item.date"
-          :place="item.place"
-          :organizer="item.organizer"
+          :date="slotProps.item.date"
+          :place="slotProps.item.place"
+          :organizer="slotProps.item.organizer"
         />
       </list-view-card>
     </template>

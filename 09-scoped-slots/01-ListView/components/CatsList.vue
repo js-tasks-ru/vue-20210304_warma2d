@@ -1,14 +1,14 @@
 <template>
   <list-view :items="cats">
     <template #scopedSlot="slotProps">
-      <list-view-card v-for="item in slotProps.items"
-        :key="item.id"
+      <list-view-card
         tag="article"
-        :title="item.title"
-        :cover="item.cover"
+        :key="slotProps.item.id"
+        :title="slotProps.item.title"
+        :cover="slotProps.item.cover"
       >
         <ul class="info-list">
-          <li>{{ item.description }}</li>
+          <li>{{ slotProps.description }}</li>
           <li>Cute cat</li>
           <li>Cats are always cute</li>
         </ul>
