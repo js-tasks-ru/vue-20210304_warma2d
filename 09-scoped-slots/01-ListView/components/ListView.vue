@@ -1,6 +1,10 @@
 <template>
   <div class="meetups-list">
     <!-- Требуется scoped-slot для элементов списка -->
+    <slot
+      name="scopedSlot"
+      :items="items"
+    ></slot>
   </div>
 </template>
 
