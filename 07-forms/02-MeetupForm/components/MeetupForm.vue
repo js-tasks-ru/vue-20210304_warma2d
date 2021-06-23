@@ -100,7 +100,7 @@ export default {
     }
   },
 
-  mounted() {
+  created() {
     this.localMeetup = _.cloneDeep(this.meetup)
   },
 
@@ -110,20 +110,37 @@ export default {
     },
 
     addAgendaItem() {
-      this.localMeetup.agenda.push(createAgendaItem())
+        let newItem = createAgendaItem()
+        let lastItem = null
+        let lastItemKey = -1
 
-      let lastItemKey = this.localMeetup.agenda.length-1
-      let lastItem = this.localMeetup.agenda[lastItemKey]
-      let penultItem = null
-      if (this.localMeetup.agenda.length > 1) {
-        penultItem = this.localMeetup.agenda[lastItemKey-1]
-      }
-      if (penultItem) {
-        lastItem.startsAt = penultItem.endsAt
-      }
+        if (this.localMeetup.agenda.length > 0) {
+          lastItemKey = this.localMeetup.agenda.length-1
+          lastItem = this.localMeetup.agenda[lastItemKey]
+        }
 
-      this.$set(this.localMeetup.agenda, lastItemKey, lastItem)
-    },
+        if (lastItem) {
+          newItem.startsAt = lastItem.endsAt
+        }
+
+        this.localMeetup.agenda.splice(++lastItemKey, 0, newItem)
+      },
+
+    // addAgendaItem() {
+    //   this.localMeetup.agenda.push(createAgendaItem())
+    //
+    //   let lastItemKey = this.localMeetup.agenda.length-1
+    //   let lastItem = this.localMeetup.agenda[lastItemKey]
+    //   let penultItem = null
+    //   if (this.localMeetup.agenda.length > 1) {
+    //     penultItem = this.localMeetup.agenda[lastItemKey-1]
+    //   }
+    //   if (penultItem) {
+    //     lastItem.startsAt = penultItem.endsAt
+    //   }
+    //
+    //   this.$set(this.localMeetup.agenda, lastItemKey, lastItem)
+    // },
 
     removeItem(index) {
       this.localMeetup.agenda.splice(index, 1)

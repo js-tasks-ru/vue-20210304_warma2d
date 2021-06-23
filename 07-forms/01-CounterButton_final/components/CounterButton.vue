@@ -32,13 +32,12 @@ export default {
   },
 
   watch: {
-    count(val) {
-      this.localCount = val
+    count: {
+      immediate: true,
+      handler(val) {
+        this.localCount = val
+      }
     },
-  },
-
-  created() {
-    this.localCount = this.count
   },
 };
 </script>

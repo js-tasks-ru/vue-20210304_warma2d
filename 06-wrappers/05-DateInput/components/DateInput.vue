@@ -38,12 +38,9 @@ export default {
   computed: {
     localListeners() {
       let listeners = { ...this.$listeners }
+      delete listeners.input
+      delete listeners.change
 
-      for(let key in listeners) {
-        if (key === 'input' || key === 'change') {
-          delete listeners[key]
-        }
-      }
       return listeners
     },
 
@@ -70,14 +67,12 @@ export default {
         let isMultiplicity = null
 
         if (this.$attrs.step) {
-          // seconds += Number(this.$attrs.step)
           isMultiplicity = seconds % 60 === 0;
         }
         seconds = String(seconds)
         if (seconds.length < 2) {
           seconds = '0'+seconds
         }
-        // let tempDate = new Date(date.getTime()+Number(seconds)*1000)
         let tempDate = new Date(date.getTime())
 
         if (isMultiplicity === true || isMultiplicity === null) {
@@ -89,10 +84,6 @@ export default {
 
       return String(this.value)
     },
-  },
-
-  mounted() {
-
   },
 
   methods: {
