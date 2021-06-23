@@ -37,7 +37,9 @@ import DateInput from './components/DateInput';
 export default {
   name: 'App',
 
-  components: { AppIcon, DateInput },
+  components: {
+    AppIcon,
+    DateInput },
 
   data() {
     return {
