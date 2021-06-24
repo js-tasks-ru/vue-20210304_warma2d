@@ -2,7 +2,6 @@
   <div class="meetups-list">
     <!-- Требуется scoped-slot для элементов списка -->
     <slot
-      name="scopedSlot"
       v-for="item in items"
       :item="item"
     ></slot>

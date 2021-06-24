@@ -1,6 +1,6 @@
 <template>
   <list-view :items="meetupsWithCoverAndBadge">
-    <template #scopedSlot="slotProps">
+    <template #default="slotProps">
       <list-view-card
         tag="router-link"
         :to="{ name: 'meetup', params: { meetupId: slotProps.item.id } }"

@@ -126,7 +126,8 @@ export const MeetupsCalendar = {
         </div>
       </div>
       <div class="rangepicker__date-grid">
-        <MeetupCalendarCell v-for="dayDate in arrayDates"
+        <MeetupCalendarCell
+            v-for="dayDate in arrayDates"
             :meetups="localMeetups"
             :dayDate="dayDate"
             :currentMonthDate="currentMonthDate"

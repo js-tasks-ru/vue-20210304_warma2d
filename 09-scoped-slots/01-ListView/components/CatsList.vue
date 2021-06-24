@@ -1,6 +1,6 @@
 <template>
   <list-view :items="cats">
-    <template #scopedSlot="slotProps">
+    <template #default="slotProps">
       <list-view-card
         tag="article"
         :key="slotProps.item.id"
@@ -8,7 +8,7 @@
         :cover="slotProps.item.cover"
       >
         <ul class="info-list">
-          <li>{{ slotProps.description }}</li>
+          <li>{{ slotProps.item.description }}</li>
           <li>Cute cat</li>
           <li>Cats are always cute</li>
         </ul>
@@ -38,6 +38,8 @@ export default {
       })),
     };
   },
+
+
 };
 </script>
 

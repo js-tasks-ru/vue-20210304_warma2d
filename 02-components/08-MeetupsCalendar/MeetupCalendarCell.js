@@ -1,15 +1,6 @@
 export default {
   name: 'MeetupCalendarCell',
 
-  data() {
-    return {
-    };
-  },
-
-  components: {
-
-  },
-
   props: {
     dayDate: {
       type: Date,
@@ -44,9 +35,6 @@ export default {
     isActiveCell() {
       return this.currentMonthDate.getMonth() === this.dayDate.getMonth()
     }
-  },
-
-  mounted() {
   },
 
   template: `
