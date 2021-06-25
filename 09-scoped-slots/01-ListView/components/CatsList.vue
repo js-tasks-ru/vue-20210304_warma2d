@@ -1,14 +1,14 @@
 <template>
   <list-view :items="cats">
-    <template #default="slotProps">
+    <template #default="{ item }">
       <list-view-card
         tag="article"
-        :key="slotProps.item.id"
-        :title="slotProps.item.title"
-        :cover="slotProps.item.cover"
+        :key="item.id"
+        :title="item.title"
+        :cover="item.cover"
       >
         <ul class="info-list">
-          <li>{{ slotProps.item.description }}</li>
+          <li>{{ item.description }}</li>
           <li>Cute cat</li>
           <li>Cats are always cute</li>
         </ul>

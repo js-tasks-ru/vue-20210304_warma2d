@@ -13,12 +13,10 @@
           v-for="dayDate in arrayDates"
           :key="dayDate.getTime()"
           class="rangepicker__cell"
-          :class="{ rangepicker__cell_inactive: !(currentMonthDate.getMonth() === dayDate.getMonth()) }"
+          :class="{ rangepicker__cell_inactive: isInActiveDay(dayDate) }"
         >
           {{ dayDate.getDate() }}
           <slot
-            v-for="item in items"
-            :item="item"
             :dayDate="dayDate"
           ></slot>
         </div>
@@ -35,13 +33,6 @@ export default {
     return {
       currentMonthDate: null,
     };
-  },
-
-  props: {
-    items: {
-      type: Array,
-      required: true,
-    },
   },
 
   created() {
@@ -106,6 +97,10 @@ export default {
   },
 
   methods: {
+    isInActiveDay(dayDate) {
+      return !(this.currentMonthDate.getMonth() === dayDate.getMonth())
+    },
+
     getDatePrevMonth(date) {
       return new Date(date.getFullYear(), date.getMonth()-1, 1)
     },

@@ -1,19 +1,19 @@
 <template>
   <list-view :items="meetupsWithCoverAndBadge">
-    <template #default="slotProps">
+    <template #default="{ item }">
       <list-view-card
         tag="router-link"
-        :to="{ name: 'meetup', params: { meetupId: slotProps.item.id } }"
-        :key="slotProps.item.id"
-        :title="slotProps.item.title"
-        :cover="slotProps.item.cover"
-        :badge="slotProps.item.badge"
-        :badge-success="slotProps.item.badgeSuccess"
+        :to="{ name: 'meetup', params: { meetupId: item.id } }"
+        :key="item.id"
+        :title="item.title"
+        :cover="item.cover"
+        :badge="item.badge"
+        :badge-success="item.badgeSuccess"
       >
         <meetup-info
-          :date="slotProps.item.date"
-          :place="slotProps.item.place"
-          :organizer="slotProps.item.organizer"
+          :date="item.date"
+          :place="item.place"
+          :organizer="item.organizer"
         />
       </list-view-card>
     </template>
