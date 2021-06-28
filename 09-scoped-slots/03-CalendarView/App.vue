@@ -17,7 +17,10 @@ import { fetchMeetups } from './data';
 
 export default {
   name: 'App',
-  components: { RussianHolidaysCalendar, MeetupsCalendar },
+  components: {
+    RussianHolidaysCalendar,
+    MeetupsCalendar,
+  },
 
   data() {
     return {
